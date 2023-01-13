@@ -1,0 +1,51 @@
+<html>
+  <head>
+   <style>
+     body {
+       text-align: center;
+     }
+     textarea {
+       margin: 10px;
+     }
+     #result {
+       resize: none;
+       cursor: text;
+     }
+   </style>
+  </head>
+  <body>
+    <div>
+      <label for="text">Enter in all of your text to reduce:</label>
+      <br />
+      <textarea id="text" name="text" cols="60"></textarea>
+      <br />
+      <button onclick="reduceCharset()">Submit</button>
+    </div>
+    <div>
+      <p>Copy and paste the following into the MSDF generator:</p>
+      <textarea id="result" disabled cols="60"></textarea>
+    </div>
+    <script>
+      function reduceCharset() {
+        // Get all of the text within the <textarea>
+        const text = document.getElementById('text').value;
+        // Split all of the characters up into an array
+        const textChars = text.split('');
+        // Add all the textChars to a Set to eliminate duplicates
+        const set = new Set();
+        textChars.forEach(char => set.add(char));
+        // Push all the uniqueChars out to a new array
+        const uniqueChars = [];
+        set.forEach(char => uniqueChars.push(char));
+        // Sort all the unique characters according to locale and join them back into a single string
+        let sortedUniqueChars = uniqueChars.sort(new Intl.Collator('zh-cn', { caseFirst: 'lower' } ).compare);
+        if (sortedUniqueChars.includes('\n')) {
+          sortedUniqueChars = sortedUniqueChars.splice(sortedUniqueChars.indexOf('\n'));
+        }
+        const uniqueCharSet = sortedUniqueChars.join('');
+        // Display the unique character set in the results box
+        document.getElementById('result').value = uniqueCharSet;
+      }
+    </script>
+  </body>
+</html>
